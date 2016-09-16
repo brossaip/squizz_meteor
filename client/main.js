@@ -6,6 +6,7 @@ import './main.html';
 Template.hello.onCreated(function helloOnCreated() {
   // counter starts at 0
   this.counter = new ReactiveVar(0);
+  this.horaServidor = new ReactiveVar('Ei');
 });
 
 Template.hello.helpers({
@@ -19,28 +20,26 @@ Template.hello.events({
     // increment the counter when button is clicked
     instance.counter.set(instance.counter.get() + 1);
   },
+}); 
+
+/*
+Meteor.startup( function () {
+  setInterval( function() {
+    Meteor.call("getServerTime", function (error, result) {
+      Session.set("horaServidor", result);
+    });
+  }, 5000);
 });
+*/
 
-if (Meteor.isServer) {
-  Meteor.methods({
-    getServerTime: function() {
-      var _time = (new Date).toTimeString();
-      console.log("Temps consultat: " + _time);
-      return _time;
-    }
-  });
-}
-  
-if (Meteor.isClient) {
-  Meteor.startup( function () {
-    setInterval( function() {
-      Meteor.call("getServerTime", function (error, result) {
-        Session.set("horaServidor", result);
-      });
-    }, 400);
-  });
-}
+Template.HoraServidor.events ({
+  'click button'(event,instance) {
+    Meteor.call("getServerTime", function (error, result) {
+      if (error) return alert('Error: ' + error.error);
+      console.log("El temps retornat: " + result);
+      instance.horaServidor.set( 'Patata' );
+      console.log("El temps retornat al valor horaServidor: " + instance.horaServidor.get());
+    }); // Aquí no retorna res !!!!!!!!!!!
 
-Template.horaServidor.time = function () {
-  return Session.get("HoraServidor");
-}
+  },
+});
