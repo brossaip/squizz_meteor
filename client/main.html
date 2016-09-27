@@ -8,6 +8,7 @@
   {{> hello}}
   {{> info}}
   {{> HoraServidor}}
+  {{> LlistaApretats}}
 </body>
 
 <template name="hello">
@@ -27,5 +28,14 @@
 
 <template name="HoraServidor">
   <button>Hora Servidor</button>
-  <p>L'hora del servidor és {{horaServidor}}.</p>
+</template>
+
+<template name="LlistaApretats">
+  <p>
+    {{#each llistaApretats}}
+      <li>
+      {{usuari}} - {{programa}} - {{temps}}
+      </li>
+    {{/each}}
+  </p>
 </template>

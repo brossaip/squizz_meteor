@@ -6,7 +6,6 @@ import './main.html';
 Template.hello.onCreated(function helloOnCreated() {
   // counter starts at 0
   this.counter = new ReactiveVar(0);
-  this.horaServidor = new ReactiveVar('Ei');
 });
 
 Template.hello.helpers({
@@ -22,24 +21,19 @@ Template.hello.events({
   },
 }); 
 
-/*
-Meteor.startup( function () {
-  setInterval( function() {
-    Meteor.call("getServerTime", function (error, result) {
-      Session.set("horaServidor", result);
-    });
-  }, 5000);
-});
-*/
-
 Template.HoraServidor.events ({
   'click button'(event,instance) {
     Meteor.call("getServerTime", function (error, result) {
       if (error) return alert('Error: ' + error.error);
       console.log("El temps retornat: " + result);
-      instance.horaServidor.set( 'Patata' );
-      console.log("El temps retornat al valor horaServidor: " + instance.horaServidor.get());
-    }); // Aquí no retorna res !!!!!!!!!!!
-
+      TempsCollection.insert({usuari: 'JB', programa: 'squizz1', temps: result});
+    }); 
   },
+});
+
+Template.LlistaApretats.helpers({
+  llistaApretats: function() {
+    //return "JHepTioBo";
+    return TempsCollection.find();
+  }
 });
